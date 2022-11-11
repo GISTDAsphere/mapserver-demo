@@ -22,66 +22,104 @@
     <script type="text/javascript" src="https://api.sphere.gistda.or.th/map/?key=test2022"></script>
     <script>
         var map;
-        var marker = new sphere.Marker ({ lon: 100.56, lat: 13.74}, {title: "HEY", detail : "This is detail", draggable: true });
+        var marker = new sphere.Marker({ lon: 100.56, lat: 13.74 }, { title: "HEY", detail: "This is detail", draggable: true });
 
-        var wms_layer = new sphere.Layer('bluemarble_terrain', {
+        // example layers from Longdo
+        var bluemarble_longdo_wms = new sphere.Layer('bluemarble_terrain', {
             type: sphere.LayerType.WMS,
             url: "https://ms.longdo.com/mapproxy/service",
             zoomRange: { min: 1, max: 9 },
             refresh: 180
         });
 
-	   	var wmts_layer = new sphere.Layer("bluemarble_terrain", {
-      		type: sphere.LayerType.WMTS_REST,
-      		url: 'https://ms.longdo.com/mapproxy/wmts',
-      		srs: 'GLOBAL_WEBMERCATOR',
-      		tileMatrix: (z) => "EPSG:900913:" + z
-       });
+        var bluemarble_longdo_wmts = new sphere.Layer("bluemarble_terrain", {
+            type: sphere.LayerType.WMTS_REST,
+            url: 'https://ms.longdo.com/mapproxy/wmts',
+            srs: 'GLOBAL_WEBMERCATOR',
+            tileMatrix: (z) => "EPSG:900913:" + z
+        });
 
-	    var airports = new sphere.Layer("airports", {
-      		type: sphere.LayerType.WMS,
-      		url: 'http://localhost/mapproxy/service',
+        // example layers from local MapProxy / QGIS server (from kartoza-mapproxy docker image)
+        var airports = new sphere.Layer("airports", {
+            type: sphere.LayerType.WMS,
+            url: 'http://localhost/mapproxy/service',
             zoomRange: { min: 1, max: 9 },
-       });
+        });
 
-/*
-	   var hillshade = new sphere.Layer("Hillshade", {
-      		type: sphere.LayerType.WMS,
-      		url: 'http://localhost/mapproxy/service',
-            zoomRange: { min: 1, max: 9 },
-       });
-*/
+        var hillshade = new sphere.Layer("Hillshade", {
+            type: sphere.LayerType.WMTS_REST,
+            url: 'http://localhost/mapproxy/wmts',
+            srs: 'osm_grid',
+            tileMatrix: (z) => "EPSG:900913:" + z
+        });
 
-	   var hillshade = new sphere.Layer("Hillshade", {
-      		type: sphere.LayerType.WMTS_REST,
-      		url: 'http://localhost/mapproxy/wmts',
-      		srs: 'osm_grid',
-      		tileMatrix: (z) => "EPSG:900913:" + z
-       });
+        var srtm = new sphere.Layer("SRTM", {
+            type: sphere.LayerType.WMTS_REST,
+            url: 'http://localhost/mapproxy/wmts',
+            srs: 'osm_grid',
+            tileMatrix: (z) => "EPSG:900913:" + z
+        });
 
-	   var srtm = new sphere.Layer("SRTM", {
-      		type: sphere.LayerType.WMTS_REST,
-      		url: 'http://localhost/mapproxy/wmts',
-      		srs: 'osm_grid',
-      		tileMatrix: (z) => "EPSG:900913:" + z
-       });
+        // example TMS layers from gdal2tiles.py render
+        var bluemarble_pre = new sphere.Layer("", {
+            type: sphere.LayerType.TMS,
+            url: 'http://localhost/data/bluemarble/tiles',
+            zoomRange: { min: 0, max: 8 },
+        });
 
-       function init() {
+        var sphere_streets = new sphere.Layer("sphere_streets", {
+            type: sphere.LayerType.WMTS_REST,
+            url: 'http://localhost/mapproxy/wmts',
+            srs: 'osm_grid',
+            tileMatrix: (z) => "EPSG:900913:" + z
+        });
+
+        var sphere_images = new sphere.Layer("sphere_images", {
+            type: sphere.LayerType.WMTS_REST,
+            url: 'http://localhost/mapproxy/wmts',
+            srs: 'osm_grid',
+            tileMatrix: (z) => "EPSG:900913:" + z
+        });
+
+        var sphere_custom = new sphere.Layer("sphere_custom", {
+            type: sphere.LayerType.WMTS_REST,
+            url: 'http://localhost/mapproxy/wmts',
+            srs: 'osm_grid',
+            tileMatrix: (z) => "EPSG:900913:" + z
+        });
+
+        var bluemarble_live = new sphere.Layer("bluemarble", {
+            type: sphere.LayerType.WMTS_REST,
+            url: 'http://localhost/mapproxy/wmts',
+            srs: 'osm_grid',
+            tileMatrix: (z) => "EPSG:900913:" + z
+        });
+
+        function init() {
             map = new sphere.Map({
                 placeholder: document.getElementById('map'),
-                zoom: 3 
+                zoom: 3
             });
 
             map.Event.bind(sphere.EventName.Ready, function (overlay) {
-                //map.Layers.insert('', wmts_layer);
                 map.Layers.add(srtm);
-                //map.Layers.add(hillshade);
                 map.Layers.add(airports);
+                //map.Layers.add(hillshade);
+
+                //map.Layers.add(bluemarble_pre);
+                //map.Layers.add(bluemarble_live);
+
+                //map.Layers.add(sphere_streets);
+                //map.Layers.setBase(sphere_streets);
+                //map.Layers.setBase(sphere_images);
+                //map.Layers.setBase(sphere_custom);
 
                 map.location({ lon: 100.510847, lat: 13.743757 });
                 map.Overlays.add(marker);
                 map.location({ lon: 100.56, lat: 13.74 }, false);
-           });
+
+                //map.Layers.insert('', wmts_layer);
+            });
         }
     </script>
 </head>
