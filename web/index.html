@@ -95,6 +95,14 @@
             tileMatrix: (z) => "EPSG:900913:" + z
         });
 
+        var bluemarble_no_source = new sphere.Layer("bluemarble_no_source", {
+            type: sphere.LayerType.WMTS_REST,
+            url: 'http://localhost/mapproxy/wmts',
+            srs: 'GLOBAL_MERCATOR',
+            tileMatrix: (z) => "EPSG:900913:" + z
+        });
+
+
         function init() {
             map = new sphere.Map({
                 placeholder: document.getElementById('map'),
@@ -106,17 +114,17 @@
                 map.Layers.add(airports);
                 //map.Layers.add(hillshade);
 
-                //map.Layers.add(bluemarble_pre);
-                //map.Layers.add(bluemarble_live);
+                //map.Layers.setBase(bluemarble_pre);
+                //map.Layers.setBase(bluemarble_live);
+                //map.Layers.setBase(bluemarble_no_source);
 
-                //map.Layers.add(sphere_streets);
                 //map.Layers.setBase(sphere_streets);
                 //map.Layers.setBase(sphere_images);
                 //map.Layers.setBase(sphere_custom);
 
-                map.location({ lon: 100.510847, lat: 13.743757 });
-                map.Overlays.add(marker);
-                map.location({ lon: 100.56, lat: 13.74 }, false);
+                //map.location({ lon: 100.510847, lat: 13.743757 });
+                //map.Overlays.add(marker);
+                //map.location({ lon: 100.56, lat: 13.74 }, false);
 
                 //map.Layers.insert('', wmts_layer);
             });

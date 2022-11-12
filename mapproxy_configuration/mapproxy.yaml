@@ -87,6 +87,10 @@ layers:
     title: Bluemarble
     sources: [bluemarble_cache]
 
+#  - name: bluemarble_no_source
+#    title: Bluemarble (No source)
+#    sources: [bluemarble_cache_no_source]
+
 caches:
   
   airports_cache:
@@ -148,6 +152,15 @@ caches:
     meta_buffer: 20
     concurrent_tile_creators: 2
 
+#  bluemarble_cache_no_source:
+#    sources: []
+#    grids: [GLOBAL_MERCATOR]
+#    upscale_tiles: 7
+#    cache:
+#      type: file
+#      directory: /mapproxy/cache_data/bluemarble_cache_no_source
+#      directory_layout: tms
+#    format: custom_format
 
 sources:
   hillshade_wms:
