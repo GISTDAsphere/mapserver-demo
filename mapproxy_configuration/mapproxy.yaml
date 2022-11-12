@@ -63,7 +63,6 @@ layers:
     title: Hillshade
     sources: [hillshade_cache]
 
-
   - name: SRTM
     title: SRTM 30m
     sources: [srtm_cache]
@@ -79,6 +78,14 @@ layers:
   - name: sphere_images
     title: GISTDA sphere Images
     sources: [sphere_images_cache]
+
+  - name: sphere_custom
+    title: sphere custom layer
+    sources: [sphere_custom_cache]
+
+  - name: bluemarble
+    title: Bluemarble
+    sources: [bluemarble_cache]
 
 caches:
   
@@ -127,11 +134,24 @@ caches:
     meta_buffer: 20
     concurrent_tile_creators: 2
 
+  sphere_custom_cache:
+    sources: [sphere_custom_wms]
+    grids: [osm_grid]
+    meta_size: [5,5]
+    meta_buffer: 20
+    concurrent_tile_creators: 2
+
+  bluemarble_cache:
+    sources: [bluemarble_wms]
+    grids: [osm_grid]
+    meta_size: [5,5]
+    meta_buffer: 20
+    concurrent_tile_creators: 2
+
 
 sources:
   hillshade_wms:
     coverage:
-
       bbox: [20, -9.99999999998001, 59.999999999984, 40]
       bbox_srs: EPSG:4326
     type: wms
@@ -147,7 +167,6 @@ sources:
       transparent: true
     supported_formats: [png]
     supported_srs: ['EPSG:3857', 'CRS:84']
-
 
   srtm_wms:
     coverage:
@@ -166,7 +185,6 @@ sources:
       transparent: true
     supported_formats: [png]
     supported_srs: ['EPSG:3857', 'CRS:84']
-
 
   airports_wms:
     coverage:
@@ -212,6 +230,36 @@ sources:
     req:
       url: http://map:8080/ows/?map=project.qgs
       layers: sphere_images
+      transparent: true
+    supported_formats: [jpeg]
+    supported_srs: ['EPSG:3857']
+
+  sphere_custom_wms:
+    type: wms
+    image:
+      transparent_color: '#ffffff'
+      transparent_color_tolerance: 20
+    wms_opts:
+      version: 1.3.0
+      featureinfo: True
+    req:
+      url: http://map:8080/ows/?map=sphere_custom.qgs
+      layers: sphere_custom
+      transparent: true
+    supported_formats: [jpeg]
+    supported_srs: ['EPSG:3857']
+
+  bluemarble_wms:
+    type: wms
+    image:
+      transparent_color: '#ffffff'
+      transparent_color_tolerance: 20
+    wms_opts:
+      version: 1.3.0
+      featureinfo: True
+    req:
+      url: http://map:8080/ows/?map=bluemarble.qgs
+      layers: world.topo.bathy.200407.3_21600_108001
       transparent: true
     supported_formats: [jpeg]
     supported_srs: ['EPSG:3857']
