@@ -9,8 +9,8 @@ services:
       - QGSRV_CACHE_SIZE=100
       - QGSRV_SERVER_TIMEOUT=300
     volumes:
-      - /c/Users/user13/mapserver-demo/qgis_projects:/web
-      - /c/Users/user13/mapserver-demo/fonts:/usr/local/share/fonts/truetype/fonts
+      - /c/Users/user13/mapserver-demo-main/qgis_projects:/web
+      - /c/Users/user13/mapserver-demo-main/fonts:/usr/local/share/fonts/truetype/fonts
   mapproxy:
     image: kartoza/mapproxy
     environment:
@@ -23,7 +23,7 @@ services:
       - ALLOW_LISTING=True
       - LOGGING=true
     volumes:
-      - /c/Users/user13/mapserver-demo/mapproxy_configuration:/mapproxy
+      - /c/Users/user13/mapserver-demo-main/mapproxy_configuration:/mapproxy
     depends_on:
       - map
   nginx:
@@ -31,9 +31,9 @@ services:
     environment:
       - NGINX_HOST=mapproxy
     volumes:
-      - /c/Users/user13/mapserver-demo/web:/web
-      - /c/Users/user13/mapserver-demo/sites-enabled:/etc/nginx/conf.d:ro
-      - /c/Users/user13/mapserver-demo/web/nginx_conf.sh:/docker-entrypoint.d/nginx_conf.sh
+      - /c/Users/user13/mapserver-demo-main/web:/web
+      - /c/Users/user13/mapserver-demo-main/sites-enabled:/etc/nginx/conf.d:ro
+      - /c/Users/user13/mapserver-demo-main/web/nginx_conf.sh:/docker-entrypoint.d/nginx_conf.sh
     logging:
       driver: json-file
       options:
