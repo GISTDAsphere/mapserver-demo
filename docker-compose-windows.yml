@@ -33,7 +33,7 @@ services:
     volumes:
       - /c/Users/user13/mapserver-demo/web:/web
       - /c/Users/user13/mapserver-demo/sites-enabled:/etc/nginx/conf.d:ro
-      - /c/Users/user13/mapserver-demo/web/nginx_conf.sh:/docker-entrypoint.d/nginx_conf.sh"
+      - /c/Users/user13/mapserver-demo/web/nginx_conf.sh:/docker-entrypoint.d/nginx_conf.sh
     logging:
       driver: json-file
       options:
