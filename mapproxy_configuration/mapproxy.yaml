@@ -87,9 +87,9 @@ layers:
     title: Bluemarble
     sources: [bluemarble_cache]
 
-#  - name: bluemarble_no_source
-#    title: Bluemarble (No source)
-#    sources: [bluemarble_cache_no_source]
+  - name: bluemarble_no_source
+    title: Bluemarble (No source)
+    sources: [bluemarble_cache_no_source]
 
 caches:
   
@@ -152,15 +152,15 @@ caches:
     meta_buffer: 20
     concurrent_tile_creators: 2
 
-#  bluemarble_cache_no_source:
-#    sources: []
-#    grids: [GLOBAL_MERCATOR]
-#    upscale_tiles: 7
-#    cache:
-#      type: file
-#      directory: /mapproxy/cache_data/bluemarble_cache_no_source
-#      directory_layout: tms
-#    format: custom_format
+  bluemarble_cache_no_source:
+    sources: []
+    grids: [GLOBAL_MERCATOR]
+    upscale_tiles: 7
+    cache:
+      type: file
+      directory: /mapproxy/cache_data/bluemarble_cache_no_source
+      directory_layout: tms
+    format: custom_format
 
 sources:
   hillshade_wms:
@@ -259,6 +259,11 @@ sources:
       url: http://map:8080/ows/?map=sphere_custom.qgs
       layers: sphere_custom
       transparent: true
+    on_error:
+       404:
+          # response: '#ff0080'
+          response: transparent
+          cache: True
     supported_formats: [jpeg]
     supported_srs: ['EPSG:3857']
 
