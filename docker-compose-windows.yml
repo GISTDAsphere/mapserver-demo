@@ -1,0 +1,46 @@
+version: '3.9'
+services:
+  map:
+    image: 3liz/qgis-map-server:3.16
+    environment:
+      - QGSRV_SERVER_WORKERS=6
+      - QGSRV_LOGGING_LEVEL=DEBUG
+      - QGSRV_CACHE_ROOTDIR=/web
+      - QGSRV_CACHE_SIZE=100
+      - QGSRV_SERVER_TIMEOUT=300
+    volumes:
+      - /c/Users/user13/mapserver-demo/qgis_projects:/web
+      - /c/Users/user13/mapserver-demo/fonts:/usr/local/share/fonts/truetype/fonts
+  mapproxy:
+    image: kartoza/mapproxy
+    environment:
+      - PRODUCTION=true
+      - PROCESSES=4
+      - CHEAPER=2
+      - THREADS=10
+      - MAPPROXY_USER_ID=1000
+      - MAPPROXY_GROUP_ID=1000
+      - ALLOW_LISTING=True
+      - LOGGING=true
+    volumes:
+      - /c/Users/user13/mapserver-demo/mapproxy_configuration:/mapproxy
+    depends_on:
+      - map
+  nginx:
+    image: nginx
+    environment:
+      - NGINX_HOST=mapproxy
+    volumes:
+      - /c/Users/user13/mapserver-demo/web:/web
+      - /c/Users/user13/mapserver-demo/sites-enabled:/etc/nginx/conf.d:ro
+      - /c/Users/user13/mapserver-demo/web/nginx_conf.sh:/docker-entrypoint.d/nginx_conf.sh
+    logging:
+      driver: json-file
+      options:
+        max-size: 200m
+        max-file: '10'
+    depends_on:
+      - mapproxy
+      - map
+    ports:
+    - "80:80"
