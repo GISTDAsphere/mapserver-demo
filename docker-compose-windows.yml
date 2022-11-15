@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   map:
-    image: 3liz/qgis-map-server:3.16
+    image: 3liz/qgis-map-server:3.26
     environment:
       - QGSRV_SERVER_WORKERS=6
       - QGSRV_LOGGING_LEVEL=DEBUG
